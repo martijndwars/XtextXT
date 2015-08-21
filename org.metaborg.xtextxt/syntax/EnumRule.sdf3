@@ -6,6 +6,9 @@ imports
   
 context-free syntax
 
-  Rule.EnumRule           = "enum" ID ":" {EnumLiteral "|"}+ ";"
+  Rule.EnumRule = "enum" ID ":"
+    {EnumLiteral "|"}+
+  ";"
+  
   EnumLiteral.EnumLiteral = ID
   EnumLiteral.EnumLiteral = ID "=" STRING

@@ -7,7 +7,9 @@ imports
 
 context-free syntax
   
-  Rule.TerminalRule = "terminal" TerminalName ":" TerminalAlternatives ";"
+  Rule.TerminalRule = "terminal" TerminalName ":"
+    TerminalAlternatives
+  ";"
   
   TerminalName.Fragment = "fragment" ID
   TerminalName.Returns = ID Returns?

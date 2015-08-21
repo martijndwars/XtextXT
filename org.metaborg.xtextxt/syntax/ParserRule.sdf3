@@ -6,16 +6,16 @@ imports
   
 context-free syntax
   
-  Rule.ParserRule = ID ":" ";"
+  Rule.ParserRule = ID Returns /* HiddenToken? */ ":"
+    // Alternatives
+  ";"
   
-  // Rule.ParserRule = ID Returns? HiddenToken? ":"
-  //   Alternatives
-  // ";"
+  Returns.Returns    = "returns" TypeRef
   
-  // Returns.Returns = "returns" TypeRef
-  // 
-  // TypeRef.MetaModel  = ID '::' ID
-  // TypeRef.Classifier = ID
+  TypeRef.None       = 
+  TypeRef.MetaModel  = ID '::' ID
+  TypeRef.Classifier = ID
+  
   // 
   // HiddenToken.HiddenToken = "hidden" "(" {RuleCall ","}+ ")"
   // 

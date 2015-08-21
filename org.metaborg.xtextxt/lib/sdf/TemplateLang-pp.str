@@ -8,6 +8,6 @@ imports
 rules
   
   pp-SDF =
-    prettyprint-SDF-start-symbols
+    prettyprint-example
     ; !V([], <id>)
     ; box2text-string(|120)

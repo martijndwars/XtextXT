@@ -12,17 +12,22 @@ rules
   generate-sdf:
     (selected, position, ast, path, project-path) -> (filename, result)
     with
-      filename := <guarantee-extension(|$[sdf3])> path;
-      result   := <transform ; pp-SDF> (selected, ast)
-
+      filename := <guarantee-extension(|$[sdf3])> path
+    ; result   := <transform ; pp-SDF> selected
+  
+  refactor-sdf:
+    (user-input, selected, position, ast, path, project-path) -> (changes, [], [], [])
+    with
+      changes := <map(!(<id>, <transform>))> selected
+  
   transform:
-  	(selected, ast) -> result
-  	with
+  	selected -> result
+  	where
   	  result := <transform-Grammar <+ transform-Rule> selected
   
   transform-Grammar:
     Grammar(name, mixin, xrules) -> Module(Unparameterized(<last> name), [], sections)
-    with
+    where
       prods    := <map(transform-Rule)> xrules
     ; sections := [
         SDFSection(
@@ -33,6 +38,6 @@ rules
 		  ]
   
   transform-Rule:
-    ParserRule(name) -> SdfProduction(SortDef(name), Rhs(rhs), NoAttrs())
-    with
+    ParserRule(name, _) -> SdfProduction(SortDef(name), Rhs(rhs), NoAttrs())
+    where
     	rhs := []
