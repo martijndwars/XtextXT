@@ -1,0 +1,21 @@
+module Xtext
+
+imports
+	
+  Common
+  ParserRule
+  // TerminalRule
+  // EnumRule
+
+context-free start-symbols
+  
+  Start
+
+context-free syntax
+
+  Start.Grammar         = <grammar <{ID "."}+> <Mixin> <Rule+>>
+  
+  GrammarId.GrammarId   = <<{ID "."}+>>
+  
+  Mixin.None            =
+  Mixin.Mixin           = <with <{GrammarId ","}+>>

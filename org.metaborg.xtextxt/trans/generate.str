@@ -1,0 +1,38 @@
+module generate
+
+imports
+	
+	include/Xtext
+	lib/sdf/TemplateLang
+	lib/sdf/TemplateLang-pp
+  lib/sdf/pp/TemplateLang-pp
+  
+rules 
+
+  generate-sdf:
+    (selected, position, ast, path, project-path) -> (filename, result)
+    with
+      filename := <guarantee-extension(|$[sdf3])> path;
+      result   := <transform ; pp-SDF> (selected, ast)
+
+  transform:
+  	(selected, ast) -> result
+  	with
+  	  result := <transform-Grammar <+ transform-Rule> selected
+  
+  transform-Grammar:
+    Grammar(name, mixin, xrules) -> Module(Unparameterized(<last> name), [], sections)
+    with
+      prods    := <map(transform-Rule)> xrules
+    ; sections := [
+        SDFSection(
+      	 ContextFreeSyntax(
+      		  prods
+    		  )
+  		  )
+		  ]
+  
+  transform-Rule:
+    ParserRule(name) -> SdfProduction(SortDef(name), Rhs(rhs), NoAttrs())
+    with
+    	rhs := []

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.imp.runtime.languageDescription">
+      <language
+            extensions="xtext"
+            description="Xtext"
+            language="Xtext"
+            derivedFrom="DynamicRoot"
+            validator="org.metaborg.xtextxt.XtextValidator"
+            validatorClass="org.metaborg.xtextxt.XtextValidator"
+      ></language>
+   </extension>
+   <extension
+         id="org.metaborg.xtextxt.parser"
+         name="Xtext Parser"
+         point="org.eclipse.imp.runtime.parser">
+      <parser
+            class="org.metaborg.xtextxt.XtextParseController"
+            language="Xtext">
+      </parser>
+   </extension>    
+</plugin>

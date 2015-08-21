@@ -1,0 +1,32 @@
+module TerminalRule
+
+imports
+  
+  Common
+  ParserRule
+
+context-free syntax
+  
+  Rule.TerminalRule = "terminal" TerminalName ":" TerminalAlternatives ";"
+  
+  TerminalName.Fragment = "fragment" ID
+  TerminalName.Returns = ID Returns?
+  
+  TerminalAlternatives.TerminalAlternatives = {TerminalGroup "|"}+
+  
+  TerminalGroup.TerminalGroup = TerminalToken+
+  
+  TerminalToken.TerminalToken = TerminalTokenElement Cardinality?
+  
+  TerminalTokenElement = "(" TerminalAlternatives ")"
+  TerminalTokenElement.Keyword = STRING
+  TerminalTokenElement.RuleCall = ID
+  TerminalTokenElement.CharacterRange = Keyword ".." Keyword
+  TerminalTokenElement.Wildcard = "."
+  TerminalTokenElement.NegatedToken = "!" TerminalTokenElement
+  TerminalTokenElement.UntilToken = "->" TerminalTokenElement
+  TerminalTokenElement.TerminalTokenElement = Eof
+  
+  Keyword.Keyword = STRING
+  
+  Eof.Eof = "EOF"

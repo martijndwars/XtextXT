@@ -1,0 +1,11 @@
+module EnumRule
+
+imports
+  
+  Common
+  
+context-free syntax
+
+  Rule.EnumRule           = "enum" ID ":" {EnumLiteral "|"}+ ";"
+  EnumLiteral.EnumLiteral = ID
+  EnumLiteral.EnumLiteral = ID "=" STRING

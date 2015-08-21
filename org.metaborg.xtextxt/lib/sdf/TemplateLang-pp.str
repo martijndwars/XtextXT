@@ -1,0 +1,13 @@
+module TemplateLang-pp
+
+imports
+	
+  libstratego-gpp
+  sdf/pp/-
+  
+rules
+  
+  pp-SDF =
+    prettyprint-SDF-start-symbols
+    ; !V([], <id>)
+    ; box2text-string(|120)

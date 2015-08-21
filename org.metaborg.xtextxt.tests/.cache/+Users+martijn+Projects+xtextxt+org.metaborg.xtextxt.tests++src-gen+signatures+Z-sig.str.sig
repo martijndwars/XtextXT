@@ -1,0 +1,1 @@
+Module("src-gen/signatures/Z-sig",[Signature([Constructors([OpDeclInj(ConstType(SortNoArgs("X")))])])])

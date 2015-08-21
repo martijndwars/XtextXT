@@ -1,0 +1,10 @@
+Module(
+  Unparameterized("Z")
+, []
+, [ SDFSection(
+      ContextFreeSyntax(
+        [SdfProduction(SortDef("X"), Rhs([Lit("\"X\"")]), NoAttrs())]
+      )
+    )
+  ]
+)

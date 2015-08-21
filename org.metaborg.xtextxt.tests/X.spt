@@ -1,0 +1,11 @@
+module X
+
+language Xtext
+start symbol Start
+
+test X [[
+  grammar X.Y
+  
+  
+  
+]] parse fails
