@@ -40,14 +40,12 @@ context-free syntax
   // Predicated.FirstSetPredicated = "->"
   // 
   // AssignableTerminal.Keyword = STRING
-  // AssignableTerminal = RuleCall
+  // AssignableTerminal.Call = RuleCall
   // // {bracket} is added because without it, the constructor will not be available 
   // AssignableTerminal = <( <AssignableAlternatives> )> {bracket}
   // AssignableTerminal.CrossReference = <[ <TypeRef> <CrossReferenceableTerminal?> ]> 
   // 
   // CrossReferenceableTerminal.CrossReferenceableTerminal = <| <RuleCall>>
-  // 
-  // RuleCall.RuleCall = ID
   // 
   // AssignableAlternatives.AssignableAlternatives = {AssignableTerminal "|"}+
   // 
@@ -55,8 +53,8 @@ context-free syntax
   // ActionCurrent.ActionCurrent = <. <ID> <Operator> current>
   // 
   Terminal.Keyword = STRING
+  Terminal.Call = ID
   // Terminal = <( <Alternatives> )>
-  // Terminal.Call = RuleCall
   // Terminal.PredicatedKeyword = Predicated STRING
   // Terminal.PredicatedRuleCall = Predicated RuleCall
   // Terminal.PredicatedGroup = <<Predicated> ( <Alternatives> )>

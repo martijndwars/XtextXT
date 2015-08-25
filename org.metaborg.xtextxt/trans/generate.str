@@ -2,7 +2,6 @@ module generate
 
 imports
 	
-	libstratego-aterm // For pp-aterm
 	include/Xtext
 	lib/sdf/TemplateLang
 	lib/sdf/TemplateLang-pp
@@ -27,9 +26,7 @@ rules
   	selected -> result
   	where
   	  expanded := <interpolate-td(try(repeat(expand)))> selected
-  	; <debug> <pp-aterm> expanded
   	; result   := <transform-All <+ map(transform-All)> expanded
-  	; <debug> <pp-aterm> result
   	  
   transform-All =
     transform-Grammar <+ transform-Rule <+ transform-Token
@@ -57,7 +54,7 @@ rules
       result := <map(transform-Token)> tokens
   
   transform-Token =
-  	transform-Cardinality <+ transform-Keyword
+  	transform-Cardinality <+ transform-Keyword <+ transform-Call
   
   transform-Cardinality:
     Optional(x) -> Opt(<transform-Keyword> x)
@@ -70,3 +67,6 @@ rules
   
   transform-Keyword:
   	Keyword(x) -> Lit(x)
+  
+  transform-Call:
+    Call(x) -> Sort(x)
