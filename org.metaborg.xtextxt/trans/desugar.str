@@ -1,0 +1,30 @@
+module desugar
+
+imports
+  
+  include/Xtext
+  trans/xtext
+  
+rules
+  
+  /**
+   * The syntax definition enforces associativity, but semantically there is no
+   * associativity. It is also easier to operate on lists. Hence, we desugar
+   * these constructs into lists.
+   */
+  
+  desugar-group:
+    Group(x, Group(ys)) -> Group([x | ys])
+  
+  desugar-group:
+    Group(a, b) -> Group([a, b])
+  
+  desugar-alt:
+    Alt(x, Alt(ys)) -> Alt([x | ys])
+  
+  desugar-alt:
+    Alt(x, y) -> Alt([x, y])
+  
+strategies
+  
+  desugar-all = innermost(desugar-alt <+ desugar-group)

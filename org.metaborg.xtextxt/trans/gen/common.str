@@ -14,3 +14,8 @@ rules // Traversals
       else
         result := <s; all(interpolate-td(s))> ast
       end
+
+rules // Lists
+  
+  listify =
+    is-list < id + ![<id>]

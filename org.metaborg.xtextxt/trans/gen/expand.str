@@ -3,6 +3,7 @@ module expand
 imports
   
   include/Xtext
+  trans/xtext
   gen/common
   
 rules
@@ -15,8 +16,8 @@ rules
    */
   expand: parser-rule@ParserRule(_, _, _) -> parser-rules
     where
-      alts := <collect-one(?Alternatives(<id>))> parser-rule
+      alts := <collect-one(?Alt(<id>))> parser-rule
     ; rules (
-        copy-rule: alt -> <topdown(try(?Alternatives(alts); !alt))> parser-rule
+        copy-rule: alt -> <topdown(try(?Alt(alts); !alt))> parser-rule
       )
     ; parser-rules := <map(copy-rule)> alts

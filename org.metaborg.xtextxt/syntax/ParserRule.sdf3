@@ -6,8 +6,8 @@ imports
   
 context-free syntax
   
-  Rule.ParserRule = ID Returns /* HiddenToken? */ ":"
-    Alternatives
+  Rule.ParserRule = ID Returns ":"
+    Token
   ";"
   
   Returns.None       =
@@ -16,45 +16,27 @@ context-free syntax
   TypeRef.MetaModel  = ID '::' ID
   TypeRef.Classifier = ID
   
-  // 
-  // HiddenToken.HiddenToken = "hidden" "(" {RuleCall ","}+ ")"
-  // 
-  Alternatives.Alternatives = {Group "|"}+ // Group used to be UnorderedGroup
-  // 
-  // UnorderedGroup.UnorderedGroup = {Group "&"}+
-  // 
-  Group.Group = Token+
-  
-  // Token.Assignment = /* Predicated? */ ID Operator AssignableTerminal Cardinality?
-  Token.Optional = Terminal "?"
-  Token.Multiple = Terminal "+"
-  Token.Any      = Terminal "*"
+  Token          = '(' Token ')' {bracket}
+  Token.Alt      = Token '|' Token {right}
+  Token.Set      = Token '&' Token {right}
+  Token.Group    = Token Token {right}
+  Token.Optional = Token "?"
+  Token.Multiple = Token "+"
+  Token.Any      = Token "*"
   Token          = Terminal
-  // Token.Action  = Action
-  // 
-  // Operator.Assignment        = "="
-  // Operator.AddAssignment     = "+="
-  // Operator.BooleanAssignment = "?="
-  // 
-  // Predicated.Predicated         = "=>"
-  // Predicated.FirstSetPredicated = "->"
-  // 
-  // AssignableTerminal.Keyword = STRING
-  // AssignableTerminal.Call = RuleCall
-  // // {bracket} is added because without it, the constructor will not be available 
-  // AssignableTerminal = <( <AssignableAlternatives> )> {bracket}
-  // AssignableTerminal.CrossReference = <[ <TypeRef> <CrossReferenceableTerminal?> ]> 
-  // 
-  // CrossReferenceableTerminal.CrossReferenceableTerminal = <| <RuleCall>>
-  // 
-  // AssignableAlternatives.AssignableAlternatives = {AssignableTerminal "|"}+
-  // 
-  // Action.Action = <{ <TypeRef> <ActionCurrent?> }>
-  // ActionCurrent.ActionCurrent = <. <ID> <Operator> current>
-  // 
+  
+  Terminal.Assign  = ID Operator Terminal
   Terminal.Keyword = STRING
-  Terminal.Call = ID
-  // Terminal = <( <Alternatives> )>
-  // Terminal.PredicatedKeyword = Predicated STRING
-  // Terminal.PredicatedRuleCall = Predicated RuleCall
-  // Terminal.PredicatedGroup = <<Predicated> ( <Alternatives> )>
+  Terminal.Call    = ID
+  Terminal.XRef    = "[" ID "]"
+  
+  Operator.EqualsAssign = "="
+  Operator.ListAssign   = "+="
+  Operator.BoolAssign   = "?=" 
+
+context-free priorities
+
+  {Token.Optional Token.Multiple Token.Any}
+> Token.Group
+> Token.Set
+> Token.Alt

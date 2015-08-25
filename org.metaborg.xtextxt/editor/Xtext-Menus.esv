@@ -30,7 +30,8 @@ menus
       action: "Selection"            = debug-task-selection
     end
   
-  menu: "Generation"                   (openeditor) (realtime)
+  // No (realtime) because AST is not analyzed (http://goo.gl/VyNbjS)
+  menu: "Generation"                   (openeditor)
     
     action: "Generate SDF3"          = generate-sdf
 
