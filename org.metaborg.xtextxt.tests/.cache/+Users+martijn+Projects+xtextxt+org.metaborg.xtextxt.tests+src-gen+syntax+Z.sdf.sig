@@ -1,1 +1,0 @@
-module(unparameterized("Z"),[],[exports(context-free-syntax([prod([lit("X")],sort("X"),attrs([]))]))])
