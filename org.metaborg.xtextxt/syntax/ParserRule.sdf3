@@ -7,19 +7,19 @@ imports
 context-free syntax
   
   Rule.ParserRule = ID Returns /* HiddenToken? */ ":"
-    // Alternatives
+    Alternatives
   ";"
   
+  Returns.None       =
   Returns.Returns    = "returns" TypeRef
   
-  TypeRef.None       = 
   TypeRef.MetaModel  = ID '::' ID
   TypeRef.Classifier = ID
   
   // 
   // HiddenToken.HiddenToken = "hidden" "(" {RuleCall ","}+ ")"
   // 
-  // Alternatives.Alternatives = {UnorderedGroup "|"}+
+  Alternatives.Alternatives = {AbstractTerminal "|"}+ // AbstractTerminal used to be UnorderedGroup
   // 
   // UnorderedGroup.UnorderedGroup = {Group "&"}+
   // 
@@ -51,7 +51,7 @@ context-free syntax
   // Action.Action = <{ <TypeRef> <ActionCurrent?> }>
   // ActionCurrent.ActionCurrent = <. <ID> <Operator> current>
   // 
-  // AbstractTerminal.Keyword = STRING
+  AbstractTerminal.Keyword = STRING
   // AbstractTerminal = <( <Alternatives> )>
   // AbstractTerminal = RuleCall
   // AbstractTerminal.PredicatedKeyword = Predicated STRING

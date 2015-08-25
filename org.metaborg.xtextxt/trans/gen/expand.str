@@ -1,0 +1,22 @@
+module expand
+
+imports
+  
+  include/Xtext
+  gen/common
+  
+rules
+  
+  /**
+   * Expand the alternatives in a parser rule into multiple parser rules where
+   * the list of alternatives has been replaced by a specific alternative.
+   *
+   * @type ParserRule(_) -> List(ParserRule(_))
+   */
+  expand: parser-rule@ParserRule(_, _, _) -> parser-rules
+    where
+      alts := <collect-one(?Alternatives(<id>))> parser-rule
+    ; rules (
+        copy-rule: alt -> <topdown(try(?Alternatives(alts); !alt))> parser-rule
+      )
+    ; parser-rules := <map(copy-rule)> alts

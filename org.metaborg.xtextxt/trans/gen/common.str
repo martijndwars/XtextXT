@@ -1,0 +1,16 @@
+module common
+
+rules // Traversals
+  
+  /**
+   * Apply s topdown. If s is applied to an element of a list, the list is
+   * flattened afterwards. 
+   */
+  interpolate-td(s):
+    ast -> result
+    where
+      if <is-list> ast then
+        result := <s; all(interpolate-td(s)); flatten-list> ast
+      else
+        result := <s; all(interpolate-td(s))> ast
+      end

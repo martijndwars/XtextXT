@@ -6,9 +6,11 @@ imports
 	lib/sdf/TemplateLang
 	lib/sdf/TemplateLang-pp
   lib/sdf/pp/TemplateLang-pp
+  gen/common
+  gen/expand
   
 rules 
-
+  
   generate-sdf:
     (selected, position, ast, path, project-path) -> (filename, result)
     with
@@ -23,7 +25,11 @@ rules
   transform:
   	selected -> result
   	where
-  	  result := <transform-Grammar <+ transform-Rule> selected
+  	  expanded := <interpolate-td(try(repeat(expand)))> selected
+  	; result   := <transform-All <+ map(transform-All)> expanded
+  	  
+  transform-All =
+    transform-Grammar <+ transform-Rule <+ transform-Keyword
   
   transform-Grammar:
     Grammar(name, mixin, xrules) -> Module(Unparameterized(<last> name), [], sections)
@@ -38,6 +44,9 @@ rules
 		  ]
   
   transform-Rule:
-    ParserRule(name, _) -> SdfProduction(SortDef(name), Rhs(rhs), NoAttrs())
+    ParserRule(name, _, body) -> SdfProduction(SortDef(name), Rhs(rhs), NoAttrs())
     where
-    	rhs := []
+      rhs := [<transform-Keyword> body]
+  
+  transform-Keyword:
+  	Keyword(x) -> Lit(x)
