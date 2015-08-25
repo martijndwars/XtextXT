@@ -19,15 +19,18 @@ context-free syntax
   // 
   // HiddenToken.HiddenToken = "hidden" "(" {RuleCall ","}+ ")"
   // 
-  Alternatives.Alternatives = {AbstractTerminal "|"}+ // AbstractTerminal used to be UnorderedGroup
+  Alternatives.Alternatives = {Group "|"}+ // Group used to be UnorderedGroup
   // 
   // UnorderedGroup.UnorderedGroup = {Group "&"}+
   // 
-  // Group.Group = AbstractToken+
-  // 
-  // AbstractToken.AssignmentAbstractToken = Predicated? ID Operator AssignableTerminal Cardinality?
-  // AbstractToken.AbstractTerminalAbstractToken = AbstractTerminal Cardinality?
-  // AbstractToken.ActionAbstractToken = Action
+  Group.Group = Token+
+  
+  // Token.Assignment = /* Predicated? */ ID Operator AssignableTerminal Cardinality?
+  Token.Optional = Terminal "?"
+  Token.Multiple = Terminal "+"
+  Token.Any      = Terminal "*"
+  Token          = Terminal
+  // Token.Action  = Action
   // 
   // Operator.Assignment        = "="
   // Operator.AddAssignment     = "+="
@@ -51,9 +54,9 @@ context-free syntax
   // Action.Action = <{ <TypeRef> <ActionCurrent?> }>
   // ActionCurrent.ActionCurrent = <. <ID> <Operator> current>
   // 
-  AbstractTerminal.Keyword = STRING
-  // AbstractTerminal = <( <Alternatives> )>
-  // AbstractTerminal = RuleCall
-  // AbstractTerminal.PredicatedKeyword = Predicated STRING
-  // AbstractTerminal.PredicatedRuleCall = Predicated RuleCall
-  // AbstractTerminal.PredicatedGroup = <<Predicated> ( <Alternatives> )>
+  Terminal.Keyword = STRING
+  // Terminal = <( <Alternatives> )>
+  // Terminal.Call = RuleCall
+  // Terminal.PredicatedKeyword = Predicated STRING
+  // Terminal.PredicatedRuleCall = Predicated RuleCall
+  // Terminal.PredicatedGroup = <<Predicated> ( <Alternatives> )>

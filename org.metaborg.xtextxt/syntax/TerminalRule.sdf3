@@ -18,7 +18,7 @@ context-free syntax
   
   TerminalGroup.TerminalGroup = TerminalToken+
   
-  TerminalToken.TerminalToken = TerminalTokenElement Cardinality?
+  TerminalToken.TerminalToken = TerminalTokenElement /*Cardinality?*/
   
   TerminalTokenElement = "(" TerminalAlternatives ")"
   TerminalTokenElement.Keyword = STRING
