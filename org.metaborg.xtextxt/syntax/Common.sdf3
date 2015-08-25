@@ -4,12 +4,16 @@ lexical syntax
 
 	ID             = "^"? [a-zA-Z\_] [a-zA-Z0-9\_]*
 	
-	STRING         = "\"" StringChar* "\"" 
-	StringChar     = ~[\"\n] 
-	StringChar     = "\\\"" 
-	StringChar     = BackSlashChar 
+	STRING           = '"' DoubleStringChar* '"'
+	STRING           = "'" SingleStringChar* "'"
+  DoubleStringChar = ~[\"\n] 
+  DoubleStringChar = '\\"' 
+  DoubleStringChar = BackSlashChar
+  SingleStringChar = ~[\'\n] 
+  SingleStringChar = "\\'" 
+  SingleStringChar = BackSlashChar
 	BackSlashChar  = "\\"
-	 
+	
 	LAYOUT         = [\ \t\n\r] 
 	CommentChar    = [\*] 
 	LAYOUT         = "/*" InsideComment* "*/" 
@@ -46,11 +50,3 @@ context-free restrictions
 	LAYOUT? -/- [\ \t\n\r]
 	LAYOUT? -/- [\/].[\/]
 	LAYOUT? -/- [\/].[\*]
-
-context-free syntax
-
-	// Cardinality is used by terminal rules and parser rules
-	
-	Cardinality.Optional = <?>
-	Cardinality.Multiple = <+>
-	Cardinality.Any = <*>
