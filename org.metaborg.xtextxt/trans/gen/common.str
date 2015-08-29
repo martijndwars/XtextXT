@@ -1,5 +1,9 @@
 module common
 
+imports
+	
+	lib/sdf/TemplateLang
+
 rules // Traversals
   
   /**
@@ -17,5 +21,17 @@ rules // Traversals
 
 rules // Lists
   
+  /**
+   * Put given term in a list if it was not already
+   */
   listify =
     is-list < id + ![<id>]
+  
+  /**
+   * Turn a list [1, 2, 3] into an Alt(1, Alt(2, 3))
+   */
+  altify:
+  	[x] -> x
+  
+  altify:
+  	[h | t] -> Alt(h, <altify> t)

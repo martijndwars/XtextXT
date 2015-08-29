@@ -4,12 +4,15 @@ imports
 	
   Common
   ParserRule
-  // TerminalRule
+  TerminalRule
   // EnumRule
 
 context-free start-symbols
   
   Start
+  
+  // For SPT tests
+  Rule
 
 context-free syntax
 

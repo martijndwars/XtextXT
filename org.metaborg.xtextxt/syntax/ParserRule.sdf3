@@ -25,10 +25,21 @@ context-free syntax
   Token.Any      = Token "*"
   Token          = Terminal
   
-  Terminal.Assign  = ID Operator Terminal
-  Terminal.Keyword = STRING
-  Terminal.Call    = ID
-  Terminal.XRef    = "[" ID "]"
+  Terminal.Assign   = ID Operator AssignableTerminal
+  Terminal.Keyword  = STRING
+  Terminal.Call     = ID
+  Terminal.Action   = "{" ID "}"
+  Terminal.XRef     = "[" ID XRefTerminal "]"
+  
+  AssignableTerminal         = "(" AssignableTerminal ")" {bracket}
+  AssignableTerminal.Alt     = AssignableTerminal '|' AssignableTerminal {right}
+  AssignableTerminal.Keyword = STRING
+  AssignableTerminal.Call    = ID
+  AssignableTerminal.XRef    = "[" ID XRefTerminal "]"
+  
+  XRefTerminal.Id      = 
+  XRefTerminal.Call    = "|" ID
+  XRefTerminal.Keyword = "|" STRING
   
   Operator.EqualsAssign = "="
   Operator.ListAssign   = "+="
@@ -36,7 +47,7 @@ context-free syntax
 
 context-free priorities
 
-  {Token.Optional Token.Multiple Token.Any}
+  {Token.Optional Token.Multiple Token.Any Terminal.Assign}
 > Token.Group
 > Token.Set
 > Token.Alt

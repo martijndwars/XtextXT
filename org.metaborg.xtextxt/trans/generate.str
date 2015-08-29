@@ -9,6 +9,7 @@ imports
   trans/xtext
   gen/common
   gen/expand
+  gen/terminal
   
 rules 
   
@@ -49,25 +50,31 @@ rules
     where
       rhs := <transform-Token ; listify> body
   
-  transform-Token =
-    transform-Group <+ transform-Cardinality <+ transform-Keyword <+ transform-Call
-  
-  transform-Group:
+  transform-Token:
     Group(tokens) -> result
     where
       result := <map(transform-Token)> tokens
   
-  transform-Cardinality:
+  transform-Token:
     Optional(x) -> Opt(<transform-Token> x)
   
-  transform-Cardinality:
+  transform-Token:
     Multiple(x) -> Iter(<transform-Token> x)
   
-  transform-Cardinality:
+  transform-Token:
     Any(x) -> IterStar(<transform-Token> x)
   
-  transform-Keyword:
+  transform-Token:
+    Assign(_, _, body) -> <transform-Token> body
+  
+  transform-Token:
+    XRef(_, terminal) -> <transform-Token> terminal
+  
+  transform-Token:
+    Id() -> Sort("ID")
+  
+  transform-Token:
   	Keyword(x) -> Lit(x)
   
-  transform-Call:
+  transform-Token:
     Call(x) -> Sort(x)

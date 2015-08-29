@@ -3,32 +3,31 @@ module TerminalRule
 imports
   
   Common
-  ParserRule
 
 context-free syntax
   
-  Rule.TerminalRule = "terminal" TerminalName ":"
-    TerminalAlternatives
-  ";"
+  Rule.TerminalRule = 'terminal' ID ':'
+    TerminalToken
+  ';'
   
-  TerminalName.Fragment = "fragment" ID
-  TerminalName.Returns = ID Returns?
+  TerminalToken          = '(' TerminalToken ')' {bracket}
+  TerminalToken.Alt      = TerminalToken '|' TerminalToken {right}
+  TerminalToken.Group    = TerminalToken TerminalToken {right}
   
-  TerminalAlternatives.TerminalAlternatives = {TerminalGroup "|"}+
+  TerminalToken.Optional = TerminalToken "?"
+  TerminalToken.Multiple = TerminalToken "+"
+  TerminalToken.Any      = TerminalToken "*"
   
-  TerminalGroup.TerminalGroup = TerminalToken+
-  
-  TerminalToken.TerminalToken = TerminalTokenElement /*Cardinality?*/
-  
-  TerminalTokenElement = "(" TerminalAlternatives ")"
-  TerminalTokenElement.Keyword = STRING
-  TerminalTokenElement.RuleCall = ID
-  TerminalTokenElement.CharacterRange = Keyword ".." Keyword
-  TerminalTokenElement.Wildcard = "."
-  TerminalTokenElement.NegatedToken = "!" TerminalTokenElement
-  TerminalTokenElement.UntilToken = "->" TerminalTokenElement
-  TerminalTokenElement.TerminalTokenElement = Eof
-  
-  Keyword.Keyword = STRING
-  
-  Eof.Eof = "EOF"
+  TerminalToken.Keyword  = STRING
+  TerminalToken.Call     = ID
+  TerminalToken.Range    = STRING '..' STRING {prefer}
+  TerminalToken.Eof      = 'EOF'
+  TerminalToken.Negation = '!' TerminalToken
+  TerminalToken.Until    = '->' TerminalToken
+  TerminalToken.Wildcard = '.'
+
+context-free priorities
+
+  {TerminalToken.Optional TerminalToken.Multiple TerminalToken.Any}
+> TerminalToken.Group
+> TerminalToken.Alt
