@@ -1,0 +1,12 @@
+module X
+
+language Xtext
+start symbol Start
+
+test assignment higher precedence than groups [[
+  grammar Java
+  
+  Class:
+    name=ID '{' Methods* '}'
+  ;
+]] parse succeeds

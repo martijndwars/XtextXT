@@ -1,0 +1,9 @@
+module X
+
+language Xtext
+start symbol Rule
+
+test character range is not group of keywords/wildcards [[
+  terminal ID:
+  	'a'..'z';
+]] parse succeeds

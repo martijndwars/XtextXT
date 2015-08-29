@@ -1,0 +1,34 @@
+module X
+
+language Xtext
+start symbol Rule
+
+test cross reference [[
+  ID:
+    [Class];
+]] parse succeeds
+
+test cross reference with sort [[
+  ID:
+    [Class|ID];
+]] parse succeeds
+
+test simple action [[
+  Exp:
+    {Number} INT;
+]] parse succeeds
+
+test assignment with cardinality [[
+  X:
+    a+=X*;
+]] parse succeeds
+
+test assignment of alternative [[
+  X:
+    a+=(X | Y);
+]] parse succeeds
+
+test assigned action [[
+  Exp:
+    INT ({Add.left=current} '+' right=INT)*;
+]] parse succeeds
