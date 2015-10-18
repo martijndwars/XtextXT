@@ -21,3 +21,22 @@ rules
         copy-rule: alt -> <topdown(try(?Alt(alts); !alt))> parser-rule
       )
     ; parser-rules := <map(copy-rule)> alts
+
+  /**
+   * Separate an optional group into two parser rules, one with the optional
+   * and one with the group.
+   *
+   * TODO: This expands optional groups, but this is not general enough. We
+   * would also like to expand repetition (Kleene plus/star). 
+   *
+   * TODO: 'AUX' (from auxiliary) is not a meaningful name. Can we think of
+   * something more meaningful?
+   * 
+   * @type ParserRule(_) -> List(ParserRule(_))
+   */
+  expand: parser-rule@ParserRule(_, _, _) -> parser-rules
+    where
+      elems := <collect-one(?Optional(Group(<id>)))> parser-rule
+    ; group := <topdown(try(?Optional(Group(elems)); !Call("AUX")))> parser-rule
+    ; auxil := ParserRule("AUX", None(), Group(elems))
+    ; parser-rules := [group, auxil]
