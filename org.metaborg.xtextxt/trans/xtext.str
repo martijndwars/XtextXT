@@ -96,11 +96,18 @@ rules // Debugging
 			result	 := ast
 	
 	// Prints the expanded analyzed annotated abstract syntax ATerm of a selection.
-	debug-show-expanded:
+  debug-show-expanded:
     (selected, position, ast, path, project-path) -> (filename, result)
     with
       filename := <guarantee-extension(|"analyzed.aterm")> path;
       result   := <interpolate-td(try(repeat(expand)))> selected
+  
+  // Prints the generated SDF abstract syntax ATerm of a selection.
+  debug-show-transformed:
+    (selected, position, ast, path, project-path) -> (filename, result)
+    with
+      filename := <guarantee-extension(|"analyzed.aterm")> path;
+      result   := <transform> selected
   
 	debug-index-project =
 		analysis-debug-index-project(|<language>)
