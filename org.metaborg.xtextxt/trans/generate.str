@@ -9,6 +9,7 @@ imports
   trans/xtext
   gen/common
   gen/expand
+  gen/list
   gen/terminal
   
 rules 
@@ -31,7 +32,7 @@ rules
     ; result   := <transform-All <+ map(transform-All)> expanded
   
   transform-All =
-    transform-Grammar <+ transform-Rule <+ transform-Token
+    transform-Grammar <+ transform-Rule <+ transform-Token-All
   
   transform-Grammar:
     Grammar(name, mixin, xrules) -> Module(Unparameterized(<last> name), [], sections)
@@ -48,12 +49,14 @@ rules
   transform-Rule:
     ParserRule(name, _, body) -> SdfProduction(SortDef(name), Rhs(rhs), NoAttrs())
     where
-      rhs := <transform-Token ; listify> body
+      rhs := <transform-Token-All ; listify> body
+  
+  transform-Token-All = transform-Token-List <+ transform-Token
   
   transform-Token:
     Group(tokens) -> result
     where
-      result := <map(transform-Token)> tokens
+      result := <map(transform-Token-All)> tokens
   
   transform-Token:
     Optional(x) -> Opt(<transform-Token> x)

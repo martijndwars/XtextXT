@@ -35,3 +35,15 @@ rules // Lists
   
   altify:
   	[h | t] -> Alt(h, <altify> t)
+
+rules // Strings
+  
+  /**
+   * Unquote without arguments
+   */
+  unquote = unquote(id)
+  
+  /**
+   * Ensure the term has double quotes
+   */
+  ensure-double-quotes = try(unquote); double-quote

@@ -1,0 +1,42 @@
+module list
+
+imports
+	
+	include/Xtext
+	lib/sdf/TemplateLang
+	trans/xtext
+  trans/gen/common
+  
+rules
+
+  /**
+   * Transform (x+=Y ("sep" x+=Y)*)? into {Y "sep"}*
+   */
+  transform-Token-List:
+    Optional(
+      Group(
+        [ Assign(x, ListAssign(), Call(y))
+        , Any(
+            Group([Keyword(sep), Assign(x, ListAssign(), Call(y))])
+          )
+        ]
+      )
+    )
+  ->
+    IterStarSep(Sort(y), Lit(<ensure-double-quotes> sep))
+  
+  /**
+   * Transform x+=Y ("sep" x+=Y)* into {Y "sep"}+
+   */
+  transform-Token-List:
+    Group(
+      [ Assign(x, ListAssign(), Call(y))
+      , Any(
+          Group(
+            [Keyword(sep), Assign(x, ListAssign(), Call(y))]
+          )
+        )
+      ]
+    )
+  ->
+    IterSep(Sort(y), Lit(<ensure-double-quotes> sep))
